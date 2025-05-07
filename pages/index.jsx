@@ -5,10 +5,14 @@ export default function Home() {
 
   useEffect(() => {
     fetch('http://localhost:5000/transactions')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
       .then(data => setTransactions(data))
       .catch(err => console.error("Error loading data:", err));
   }, []);
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -27,7 +31,7 @@ export default function Home() {
             </div>
             <div>
               <h2 className="text-lg f text-gray-700 mb-1"> Сума в валюті операції:</h2>
-              <p className="text-gray-900">{item['Сума в валюті операції']}</p>
+              <p className="text-gray-900">{item['Сума в валюті картки (UAH)']}</p>
             </div>
           </div>
         ))}
